@@ -2,7 +2,7 @@
 #### A basic implementation of a thread pool library in C
 
 Below is a basic example of utilizing the multithreading library.
-To compile this example instead of the library run **make example
+To compile this example instead of the library run **make example**
 
 ```c 
 void	*thread_func(void * arg)
