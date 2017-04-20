@@ -6,7 +6,7 @@
 /*   By: ssmith <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:20:36 by ssmith            #+#    #+#             */
-/*   Updated: 2017/04/19 17:35:21 by cyildiri         ###   ########.fr       */
+/*   Updated: 2017/04/19 21:21:50 by cyildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,28 +137,6 @@ void		init_stars(t_cluster *cluster, int stars_ct)
 }
 
 /*
-**	3d object constructor for a wireframe of specified vertices per face
-*/
-
-t_3d_object	*new_point_map(int verticies)
-{
-	t_3d_object *obj;
-
-	if (!(obj = (t_3d_object *)ft_memalloc(sizeof(t_3d_object))))
-		return (NULL);
-	obj->vertex_cnt = verticies;
-	obj->faces_arr = 0;
-    obj->face_cnt = 0;
-	obj->vertices = (t_vec3fc *)ft_memalloc(sizeof(t_vec3fc);
-	return (obj);
-}
-
-void add_point(t_3d_object *point_map, t_vec3fc point)
-{
-	
-}
-
-/*
 **	Event Hook for rendering
 */
 
@@ -167,7 +145,7 @@ int			render_loop(t_renderer  *renderer)
 	calc_velocity(&cluster.stars[0], &cluster.stars[1]);
 	calc_velocity(&cluster.stars[1], &cluster.stars[0]);
 	apply_velocity(&cluster);
-	add_point(point_map, &cluster);
+	add_point((t_3d_object *)renderer->scene->objects->content, &cluster);
 	renderer->render(renderer, *renderer->scene);
 	return (0);
 }
@@ -195,7 +173,7 @@ int			main()
 	t_3d_object *point_map;
 
 	i = 0;
-	renderer = new_renderer(render_scene);
+	renderer = new_renderer(scene_render_point_map);
 	add_window(renderer, 1000, 1000, "two body gravity simulation");
 	scene1 = new_scene(perspective_projection, 1000, 1000);
 	scene1->camera = new_camera(vec6f(vec3f(0, 0, 150), vec3f(0.0, 0.0, 0.0)), vec3f(0, 0, 4));
@@ -203,6 +181,7 @@ int			main()
 	cluster.stars = (t_stars *)malloc(sizeof(t_stars) * 2);
 	cluster.star_ct = 2;
 	init_stars(&cluster, cluster.star_ct);
+	point_map = new_point_map(1000000);
 	add_object(scene1, point_map);
 	scene1->active_obj = 0;
 	fdf_renderer->scene = scene1;
