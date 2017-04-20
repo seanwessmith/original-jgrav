@@ -6,7 +6,7 @@
 /*   By: cyildiri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 16:37:29 by cyildiri          #+#    #+#             */
-/*   Updated: 2017/04/19 21:30:28 by cyildiri         ###   ########.fr       */
+/*   Updated: 2017/04/19 21:33:47 by cyildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int         mouse_press_hook(int button, int x, int y, void *param);
 int         mouse_release_hook(int button, int x, int y, void *param);
 int         mouse_motion_hook(int x, int y, void *param);
 void        center_obj_originxy(t_3d_object *object);
-int         render_loop(void *param);
+int         render_loop(t_renderer *renderer);
 void        setup_hooks(t_renderer *renderer);
 
 #endif
