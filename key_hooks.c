@@ -6,7 +6,7 @@
 /*   By: cyildiri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/22 09:17:08 by cyildiri          #+#    #+#             */
-/*   Updated: 2017/04/19 21:50:39 by cyildiri         ###   ########.fr       */
+/*   Updated: 2017/04/20 01:17:16 by cyildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	object_translation_controls(int keycode, t_renderer *renderer)
 {
 	t_3d_object	*obj;
 	t_vec3fc	*pos;
-
-	obj = (renderer->scene->active_obj)
-		? ((t_3d_object *)renderer->scene->objects->content)
-		: ((t_3d_object *)renderer->scene->objects->next->content);
+	
+	ft_putstr("test1\n");
+	obj = (t_3d_object *)renderer->scene->objects->content;
 	pos = &(obj->pos_vector.position);
+	ft_putstr("test2\n");
 	if (keycode == UP)
 		*pos = translate_point(*pos, vec3f(0, 5, 0));
 	else if (keycode == DOWN)
@@ -39,6 +39,7 @@ void	object_translation_controls(int keycode, t_renderer *renderer)
 		*pos = translate_point(*pos, vec3f(0, 0, -5));
 	else if (keycode == PAGE_DOWN)
 		*pos = translate_point(*pos, vec3f(0, 0, 5));
+	ft_putstr("test3\n");
 }
 
 /*
@@ -49,9 +50,7 @@ void	object_rotation_controls(int keycode, t_renderer *renderer)
 {
 	t_3d_object *obj;
 
-	obj = (renderer->scene->active_obj)
-		? ((t_3d_object *)renderer->scene->objects->content)
-		: ((t_3d_object *)renderer->scene->objects->next->content);
+	obj = (t_3d_object *)renderer->scene->objects->content;
 	if (keycode == NUM_7)
 		rotate_object(obj, vec3f(0.0, 0.0, 3.14 / 64.0));
 	else if (keycode == NUM_9)
@@ -93,14 +92,21 @@ void	camera_translation_controls(int keycode, t_renderer *renderer)
 **	Hook that handles key presses and delegates to functions above
 */
 
+#include <stdio.h>
+
 int		key_pressed(int keycode, void *param)
 {
 	t_renderer	*renderer;
 
 	renderer = (t_renderer *)param;
+	ft_putstr("test\n");
+	printf(" %p \n", renderer);
 	object_translation_controls(keycode, renderer);
+    ft_putstr("test\n");
 	object_rotation_controls(keycode, renderer);
+    ft_putstr("test\n");
 	camera_translation_controls(keycode, renderer);
+    ft_putstr("test\n");
 	if (keycode == NUM_0)
 	{
 		if (renderer->scene->projection_method == perspective_projection)
@@ -108,14 +114,19 @@ int		key_pressed(int keycode, void *param)
 		else
 			renderer->scene->projection_method = perspective_projection;
 	}
+    ft_putstr("test\n");
 	if (keycode == NUM_1 && renderer->scene->active_obj != -99)
 		renderer->scene->active_obj = (renderer->scene->active_obj) ? 0 : 1;
+    ft_putstr("test\n");	
 	if (keycode == NUM_3)
 		renderer->scene->scale = translate_point(renderer->scene->scale,
 													vec3f(1, 1, 1));
-	if (keycode == NUM_DOT)
+
+    ft_putstr("test\n");	
+if (keycode == NUM_DOT)
 		renderer->scene->scale = translate_point(renderer->scene->scale,
 													vec3f(-1, -1, -1));
+ft_putstr("test\n");
 	if (keycode == ESC)
 		exit(1);
 	return (0);

@@ -6,17 +6,16 @@
 /*   By: ssmith <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 12:20:36 by ssmith            #+#    #+#             */
-/*   Updated: 2017/04/20 00:50:48 by cyildiri         ###   ########.fr       */
+/*   Updated: 2017/03/09 22:26:42 by ssmith           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "../libft/includes/libft.h"
 #include <math.h>
-#include "j-grav.h"
 
-/*
 void		print_output(t_cluster *cluster)
 {
 	int		i;
@@ -50,7 +49,7 @@ void		print_stars(t_cluster *cluster, int stars_ct)
 		printf("\n");
 	}
 }
-*/
+
 double	find_distance(t_stars one, t_stars two)
 {
 	double	distance;
@@ -135,87 +134,28 @@ void		init_stars(t_cluster *cluster, int stars_ct)
 	}
 }
 
-/*
-**	Event Hook for rendering
-*/
-
-int			render_loop(t_env  *env)
-{
-	int	i;
-	ft_putstr("p1\n");
-	calc_velocity(&env->cluster->stars[0], &env->cluster->stars[1]);
-	calc_velocity(&env->cluster->stars[1], &env->cluster->stars[0]);
-	apply_velocity(env->cluster);
-	ft_putstr("p2\n");
-	i = 0;
-	while (i < env->cluster->star_ct)
-	{
-		ft_putstr("p3\n");
-		
-		point_map_add_point((t_3d_object *)env->renderer->scene->objects->content, vec3fc(env->cluster->stars[i].x, env->cluster->stars[i].y, env->cluster->stars[i].z, 0x00FFFFFF));
-		ft_putstr("p4\n");
-		i++;
-	}
-	env->renderer->render(env->renderer, *env->renderer->scene);
-	return (0);
-}
-
-/*
-**	Set all the event hooks
-*/
-
-void		setup_hooks(t_renderer *renderer, t_env *env)
-{
-	mlx_hook(renderer->window, 2, 0, key_pressed, renderer);
-	mlx_hook(renderer->window, 4, 0, mouse_press_hook, renderer);
-	mlx_hook(renderer->window, 5, 0, mouse_release_hook, renderer);
-	mlx_hook(renderer->window, 6, 0, mouse_motion_hook, renderer);
-	mlx_loop_hook(renderer->mlx, render_loop, env);
-	mlx_loop(renderer->mlx);
-}
-
 int			main()
 {
-	/*t_env		env;
 	int			i;
 	t_cluster	cluster;
-	t_renderer	*renderer;
-	t_scene		*scene1;
-	t_3d_object *point_map;
-	
-	i = 0;*/
-	ft_putstr("p2\n");
-/*
-	renderer = new_renderer(scene_render_point_map);
-    ft_putstr("p2\n");
-	add_window(renderer, 1000, 1000, "two body gravity simulation");
-    ft_putstr("p2\n");
-	scene1 = new_scene(perspective_projection, 1000, 1000);
-    ft_putstr("p2\n");
-	scene1->camera = new_camera(vec6f(vec3f(0, 0, 0), vec3f(0.0, 0.0, 0.0)), vec3f(0, 0, 4));
-    ft_putstr("p2\n");
+
+	i = 0;
 	cluster = *(t_cluster *)malloc(sizeof(cluster));
-    ft_putstr("p2\n");
 	cluster.stars = (t_stars *)malloc(sizeof(t_stars) * 2);
-    ft_putstr("p2\n");
 	cluster.star_ct = 2;
-	ft_putstr("p2\n");
 	init_stars(&cluster, cluster.star_ct);
-    ft_putstr("p2\n");
-	point_map = new_point_map(1000000);
-    ft_putstr("p2\n");
-	add_object(scene1, point_map);
-    ft_putstr("p2\n");
-	scene1->active_obj = 0;
-    ft_putstr("p2\n");
-	renderer->scene = scene1;
-    ft_putstr("p2\n");
-	env.cluster = &cluster;
-    ft_putstr("p2\n");
-	env.renderer = renderer;
-    ft_putstr("p2\n");
-	setup_hooks(renderer, &env);
-    ft_putstr("p2\n");
-*/
+
+	printf("%.0f ", cluster.stars[0].x);
+	printf("%.0f ", cluster.stars[0].y);
+	printf("%.0f\n", cluster.stars[0].z);
+	while (i++ < 100000)
+	{
+//		print_stars(&cluster, cluster.star_ct);
+		calc_velocity(&cluster.stars[0], &cluster.stars[1]);
+		calc_velocity(&cluster.stars[1], &cluster.stars[0]);
+		apply_velocity(&cluster);
+//		print_stars(&cluster, cluster.star_ct);
+		print_output(&cluster);
+	}
 	return (0);
 }
