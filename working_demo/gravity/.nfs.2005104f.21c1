@@ -1,0 +1,19 @@
+/////////////////////////////////////////////////////////////////////////////////
+// Author: SEAN SMITH                                                          //
+// Program: LEM_IN                                                             //
+// Description: Algo to navigate tubes & rooms. Goal move from start to finish //
+/////////////////////////////////////////////////////////////////////////////////
+
+#include "libft/includes/libft.h"
+
+int		main(int ac, char **av)
+{
+	t_lemin		lemin;
+
+	if (ac > 1)
+	{
+		lemin.ant_count = 0;
+		parse_input(ac, av, &lemin);
+	}
+	return (0);
+}
