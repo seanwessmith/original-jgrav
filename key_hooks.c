@@ -6,7 +6,7 @@
 /*   By: cyildiri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/22 09:17:08 by cyildiri          #+#    #+#             */
-/*   Updated: 2017/04/20 01:17:16 by cyildiri         ###   ########.fr       */
+/*   Updated: 2017/04/20 17:21:59 by cyildiri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ void	object_translation_controls(int keycode, t_renderer *renderer)
 	t_3d_object	*obj;
 	t_vec3fc	*pos;
 	
-	ft_putstr("test1\n");
 	obj = (t_3d_object *)renderer->scene->objects->content;
 	pos = &(obj->pos_vector.position);
-	ft_putstr("test2\n");
 	if (keycode == UP)
 		*pos = translate_point(*pos, vec3f(0, 5, 0));
 	else if (keycode == DOWN)
@@ -39,7 +37,6 @@ void	object_translation_controls(int keycode, t_renderer *renderer)
 		*pos = translate_point(*pos, vec3f(0, 0, -5));
 	else if (keycode == PAGE_DOWN)
 		*pos = translate_point(*pos, vec3f(0, 0, 5));
-	ft_putstr("test3\n");
 }
 
 /*
@@ -97,36 +94,15 @@ void	camera_translation_controls(int keycode, t_renderer *renderer)
 int		key_pressed(int keycode, void *param)
 {
 	t_renderer	*renderer;
+	t_camera	cam;
 
 	renderer = (t_renderer *)param;
-	ft_putstr("test\n");
-	printf(" %p \n", renderer);
+	cam = *renderer->scene->camera;
 	object_translation_controls(keycode, renderer);
-    ft_putstr("test\n");
 	object_rotation_controls(keycode, renderer);
-    ft_putstr("test\n");
+	printf("cam (%f,%f,%f) ", cam.loc.position.x, cam.loc.position.y, cam.loc.position.z);
+	printf("-> rot (%f,%f,%f)\n", cam.loc.rotation.x, cam.loc.rotation.y, cam.loc.rotation.z);
 	camera_translation_controls(keycode, renderer);
-    ft_putstr("test\n");
-	if (keycode == NUM_0)
-	{
-		if (renderer->scene->projection_method == perspective_projection)
-			renderer->scene->projection_method = orthographic_projection;
-		else
-			renderer->scene->projection_method = perspective_projection;
-	}
-    ft_putstr("test\n");
-	if (keycode == NUM_1 && renderer->scene->active_obj != -99)
-		renderer->scene->active_obj = (renderer->scene->active_obj) ? 0 : 1;
-    ft_putstr("test\n");	
-	if (keycode == NUM_3)
-		renderer->scene->scale = translate_point(renderer->scene->scale,
-													vec3f(1, 1, 1));
-
-    ft_putstr("test\n");	
-if (keycode == NUM_DOT)
-		renderer->scene->scale = translate_point(renderer->scene->scale,
-													vec3f(-1, -1, -1));
-ft_putstr("test\n");
 	if (keycode == ESC)
 		exit(1);
 	return (0);

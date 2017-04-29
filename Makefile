@@ -1,5 +1,5 @@
 NAME = grav_sim
-SRC =   cans_main.c\
+SRC =   main.c\
 		key_hooks.c\
         mouse_hooks.c\
         object_operations.c\
