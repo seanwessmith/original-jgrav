@@ -16,8 +16,8 @@
 # define BLANK(ws) (ws=='\t'||ws=='\v'||ws=='\n'||ws=='\f'||ws=='\r'||ws==' ')
 # define VARS int x0, y0, x1, y1
 # define BUFF_SIZE 1000
-# define WIN_W 1000
-# define WIN_H 1000
+# define WIN_W 1800
+# define WIN_H 600
 
 # include "../../includes/mlx.h"
 # include <fcntl.h>

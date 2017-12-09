@@ -19,14 +19,14 @@ void		print_output(t_cluster *cluster)
 {
 	int		i;
 	i = 0;
-		printf("%.0f ", cluster->stars[i].x);
-		printf("%.0f ", cluster->stars[i].y);
-		printf("%.0f", cluster->stars[i].z);
-		printf("\n");
+//	printf("%.0f ", cluster->stars[i].x);
+///	printf("%.0f ", cluster->stars[i].y);
+//	printf("%.0f", cluster->stars[i].z);
+//	printf("\n");
 	i = -1;
 	while (++i < cluster->star_ct)
 	{
-    printf("i%d\n", i)
+		printf("i%d\n", i);
 		printf("%.0f ", cluster->stars[i].x);
 		printf("%.0f ", cluster->stars[i].y);
 		printf("%.0f", cluster->stars[i].z);
@@ -46,7 +46,7 @@ void		print_stars(t_cluster *cluster, int stars_ct)
 		printf("x: %f\n", cluster->stars[i].x);
 		printf("y: %f\n", cluster->stars[i].y);
 		printf("z: %f\n", cluster->stars[i].z);
-		printf("velocity: %f\n", cluster->stars[i].velocity);
+//		printf("velocity: %f\n", cluster->stars[i].velocity);
 		printf("vx: %f\n", cluster->stars[i].vx);
 		printf("vy: %f\n", cluster->stars[i].vy);
 		printf("vz: %f\n", cluster->stars[i].vz);
@@ -70,26 +70,30 @@ double	find_force(t_stars one, t_stars two, double distance)
 	force = one.mass * two.mass * (6.673 * pow(10.0, -11.0));
 //	printf("                    FORCE1 %f\n", force);
 	force /= distance * .5;
+//	printf("                    FORCE2 %f\n", force);
 	return (force);
 }
 
-void		calc_velocity(t_stars *one, t_stars *two)
+void		calc_velocity(t_stars *one, t_stars *two, t_stars *three)
 {
 	double	force;
 	double	distance;
 
 	distance = find_distance(*one, *two);
-//	printf("                   DISTANCE = %f\n", distance);
+	
 	force = find_force(*one, *two, distance);
-//	printf("                   FORCE = %f\n", force);
-//	printf("                   two-x = %f\n", two->x);
-//	printf("                   one-x = %f\n", one->x);
+	
 	one->deltax = (force * (two->x - one->x));
 	one->deltay = (force * (two->y - one->y));
 	one->deltaz = (force * (two->z - one->z));
-//	printf("                   DELTAX = %f\n", one->deltax);
-//	printf("                   DELTAY =%f\n", one->deltay);
-//	printf("                   DELTAZ = %f\n", one->deltaz);
+	
+	distance = find_distance(*one, *three);
+	
+	force = find_force(*one, *three, distance);
+	
+	one->deltax = (force * (three->x - one->x));
+	one->deltay = (force * (three->y - one->y));
+	one->deltaz = (force * (three->z - one->z));
 }
 
 void		apply_velocity(t_cluster *cluster)
@@ -121,23 +125,32 @@ void		init_stars(t_cluster *cluster, int stars_ct)
   stars_ct = 0;
 	i = -1;
 	mod = 1;
-  cluster->stars[0].mass = 5.972 + pow(10, 24);
-	cluster->stars[0].x = 0;
-	cluster->stars[0].y = 0;
-	cluster->stars[0].z = 0;
-	cluster->stars[0].velocity = ft_randint(1);
+  cluster->stars[0].mass = 2.972 * pow(10, 1);
+	cluster->stars[0].x = 401;
+	cluster->stars[0].y = 400;
+	cluster->stars[0].z = 400;
+//	cluster->stars[0].velocity = ft_randint(1);
 	cluster->stars[0].vx = 0;
 	cluster->stars[0].vy = 0;
 	cluster->stars[0].vz = 0;
 
-  cluster->stars[1].mass = 419600;
-	cluster->stars[1].x = 70;
-	cluster->stars[1].y = 70;
-	cluster->stars[1].z = 250000;
-	cluster->stars[1].velocity = 7670;
-	cluster->stars[1].vx = 7670;
+  cluster->stars[1].mass = 2.972 * pow(10, 1);
+	cluster->stars[1].x = 400;
+	cluster->stars[1].y = 401;
+	cluster->stars[1].z = 400;
+//	cluster->stars[1].velocity = 7670;
+	cluster->stars[1].vx = 0;
 	cluster->stars[1].vy = 0;
 	cluster->stars[1].vz = 0;
+
+  cluster->stars[2].mass = 2.972 * pow(10, 1);
+	cluster->stars[2].x = 400;
+	cluster->stars[2].y = 400;
+	cluster->stars[2].z = 401;
+//	cluster->stars[2].velocity = 7670;
+	cluster->stars[2].vx = 0;
+	cluster->stars[2].vy = 0;
+	cluster->stars[2].vz = 0;
 }
 
 int			main()
@@ -147,16 +160,21 @@ int			main()
 
 	i = 0;
 	cluster = *(t_cluster *)malloc(sizeof(cluster));
-	cluster.stars = (t_stars *)malloc(sizeof(t_stars) * 2);
+	cluster.stars = (t_stars *)malloc(sizeof(t_stars) * 3);
 	cluster.star_ct = 3;
 	init_stars(&cluster, cluster.star_ct);
-	while (i++ < 100)
+	while (i++ < 100000000)
 	{
 //		print_stars(&cluster, cluster.star_ct);
-		calc_velocity(&cluster.stars[0], &cluster.stars[1]);
+		calc_velocity(&cluster.stars[0], &cluster.stars[1], &cluster.stars[2]);
+		calc_velocity(&cluster.stars[1], &cluster.stars[2], &cluster.stars[0]);
+		calc_velocity(&cluster.stars[2], &cluster.stars[0], &cluster.stars[1]);
 		apply_velocity(&cluster);
 //		print_stars(&cluster, cluster.star_ct);
-		print_output(&cluster);
+		if (i % 10000 == 0)
+		{
+			print_output(&cluster);
+		}
 	}
 	return (0);
 }
