@@ -30,6 +30,26 @@ void		print_output(t_cluster *cluster)
 	}
 }
 
+void		print_stars(t_cluster *cluster, int stars_ct)
+{
+	int		i;
+
+	i = -1;
+  while (++i < stars_ct)
+	{
+		printf("stars[%d]:\n", stars_ct);
+		printf("mass: %f\n", cluster->stars[i].mass);
+		printf("x: %f\n", cluster->stars[i].x);
+		printf("y: %f\n", cluster->stars[i].y);
+		printf("z: %f\n", cluster->stars[i].z);
+		printf("velocity: %f\n", cluster->stars[i].velocity);
+		printf("vx: %f\n", cluster->stars[i].vx);
+		printf("vy: %f\n", cluster->stars[i].vy);
+		printf("vz: %f\n", cluster->stars[i].vz);
+		printf("\n");
+	}
+}
+
 double	find_distance(t_stars one, t_stars two)
 {
 	double	distance;
@@ -42,6 +62,7 @@ double	find_force(double b_mass, double b_dist, double a_dist, double distance)
 {
 	double	force;
 
+//ORIGINAL	force = (a_mass * (6.673 * pow(10, -11) / pow(distance, 3)) * (b_dist - a_dist));
 	force = ((b_mass * (6.673 * pow(10, -11) / pow(distance, 3))) * (b_dist - a_dist));
 //	printf("                    force: %f\n", force);
 	return (force);
@@ -80,6 +101,7 @@ void		apply_velocity(t_cluster *cluster)
 		cluster->stars[i].x += cluster->stars[i].vx * delta_t;
 		cluster->stars[i].y += cluster->stars[i].vy * delta_t;
 		cluster->stars[i].z += cluster->stars[i].vz * delta_t;
+		////////////////////////////////////////////////////////////
 	}
 }
 
@@ -91,6 +113,7 @@ void		init_stars(t_cluster *cluster, int stars_ct)
 	while (++i < stars_ct)
 	{
 		cluster->stars[i].mass = ft_randint(10);
+		///TEMPORARY
 		cluster->stars[0].mass = 5.972 * pow(10, 24);
 		cluster->stars[1].mass = 419600;
 		//X Y & Z are hardcoded, needs to be changed to rand(x)
@@ -100,6 +123,7 @@ void		init_stars(t_cluster *cluster, int stars_ct)
 		cluster->stars[1].x = 400;
 		cluster->stars[1].y = 400;
 		cluster->stars[1].z = 400;
+		//TEMPORARY
 		cluster->stars[0].vx = 0;
 		cluster->stars[0].vy = 0;
 		cluster->stars[0].vz = 0;
